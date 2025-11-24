@@ -1,0 +1,45 @@
+flowchart TD
+    A[开始环境配置] --> B[1/4 智能检测Python环境]
+    
+    B --> C{检测 python 命令}
+    C -->|成功| D[✓ 官方Python<br/>设置 PYTHON_CMD=python]
+    C -->|失败| E{检测 python3 命令}
+    
+    E -->|成功| F[✓ Python3<br/>设置 PYTHON_CMD=python3]
+    E -->|失败| G{检测 conda 命令}
+    
+    G -->|成功| H[✓ Anaconda/Conda<br/>设置 PYTHON_CMD=python]
+    G -->|失败| I{检测 anaconda}
+    
+    I -->|成功| J[✓ 检测到Anaconda<br/>设置 PYTHON_CMD=anaconda]
+    I -->|失败| K{检测 py.exe}
+    
+    K -->|成功| L[✓ Windows Python Launcher<br/>设置 PYTHON_CMD=py.exe]
+    K -->|失败| M[❌ 未找到任何Python环境]
+    
+    D --> N[跳转到 python_found]
+    F --> N
+    H --> N
+    J --> N
+    L --> N
+    
+    M --> O[显示详细错误信息和解决方案]
+    O --> P[提供多种安装建议]
+    P --> Q[退出]
+    
+    N --> R[2/4 创建虚拟环境]
+    R --> S{venv是否存在?}
+    S -->|否| T[使用检测到的Python创建venv]
+    S -->|是| U[跳过创建]
+    
+    T --> V[3/4 激活虚拟环境]
+    U --> V
+    V --> W[4/4 安装依赖库]
+    W --> X[使用镜像源安装]
+    X --> Y[显示完成信息]
+    
+    style A fill:#e1f5fe
+    style B fill:#f3e5f5
+    style N fill:#e8f5e8
+    style M fill:#ffebee
+    style Y fill:#e8f5e8
